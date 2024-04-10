@@ -1,5 +1,13 @@
 package org.iesalandalus.programacion.reservashotel.Modelo.negocio.mongodb.utilidades;
 
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.MongoClientSettings;
+import com.mongodb.MongoCredential;
+import com.mongodb.ServerAddress;
+
+import com.mongodb.client.MongoClients;
+
 import org.iesalandalus.programacion.reservashotel.Modelo.dominio.Huesped;
 
 import java.time.format.DateTimeFormatter;
@@ -10,7 +18,7 @@ public class MongoDB {
 
     public static final DateTimeFormatter FORMATO_DIA_HORA = DateTimeFormatter.ofPattern("dd-MM_yyyy HH:mm");
 
-    private static final String SERVIDOR=  :
+    private static final String SERVIDOR=  "35.246.226.125";
 
     private static final int PUERTO =27017;
 
@@ -70,7 +78,7 @@ public class MongoDB {
                                     builder.hosts(Arrays.asList(new ServerAddress(SERVIDOR, PUERTO))))
                             .credential(credenciales)
                             .build());
-            System.out.println("Conexión a MongoDB realizada correctamente.");
+            System.out.println("Conexiï¿½n a MongoDB realizada correctamente.");
         }
         return conexion;
     }
@@ -79,7 +87,7 @@ public class MongoDB {
         if (conexion != null) {
             conexion.close();
             conexion = null;
-            System.out.println("Conexión a MongoDB cerrada.");
+            System.out.println("Conexiï¿½n a MongoDB cerrada.");
         }
     }
 
