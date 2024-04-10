@@ -7,9 +7,9 @@ import org.iesalandalus.programacion.reservashotel.Modelo.dominio.TipoHabitacion
 import org.iesalandalus.programacion.reservashotel.Modelo.negocio.IHabitaciones;
 import org.iesalandalus.programacion.reservashotel.Modelo.negocio.IHuespedes;
 import org.iesalandalus.programacion.reservashotel.Modelo.negocio.IReservas;
-import org.iesalandalus.programacion.reservashotel.Modelo.negocio.memoria.Habitaciones;
-import org.iesalandalus.programacion.reservashotel.Modelo.negocio.memoria.Huespedes;
-import org.iesalandalus.programacion.reservashotel.Modelo.negocio.memoria.Reservas;
+import org.iesalandalus.programacion.reservashotel.Modelo.negocio.mongodb.Habitaciones;
+import org.iesalandalus.programacion.reservashotel.Modelo.negocio.mongodb.Huespedes;
+import org.iesalandalus.programacion.reservashotel.Modelo.negocio.mongodb.Reservas;
 
 import javax.naming.OperationNotSupportedException;
 import java.time.LocalDateTime;

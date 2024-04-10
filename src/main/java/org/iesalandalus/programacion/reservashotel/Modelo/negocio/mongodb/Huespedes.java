@@ -1,4 +1,4 @@
-package org.iesalandalus.programacion.reservashotel.Modelo.negocio.memoria;
+package org.iesalandalus.programacion.reservashotel.Modelo.negocio.mongodb;
 
 import org.iesalandalus.programacion.reservashotel.Modelo.dominio.Huesped;
 import org.iesalandalus.programacion.reservashotel.Modelo.negocio.IHuespedes;
