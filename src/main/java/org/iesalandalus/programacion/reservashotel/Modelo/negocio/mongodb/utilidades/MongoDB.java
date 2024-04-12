@@ -8,9 +8,17 @@ import com.mongodb.ServerAddress;
 
 import com.mongodb.client.MongoClients;
 
+import org.iesalandalus.programacion.reservashotel.Modelo.dominio.Habitacion;
 import org.iesalandalus.programacion.reservashotel.Modelo.dominio.Huesped;
 
+import org.bson.Document;
+import org.iesalandalus.programacion.reservashotel.Modelo.dominio.Reserva;
+
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class MongoDB {
 
@@ -24,7 +32,7 @@ public class MongoDB {
 
     private static final String BD = "reservashotel";
     private static final String USUARIO = "reservashotel";
-    private static final String CONTRASENA = "RESERVASHOTEL-2024";
+    private static final String CONTRASENA = "reservashotel-2024";
     private static final String HUESPED="huesped";
     private static final String NOMBRE = "nombre";
     private static final String DNI = "dni";
@@ -99,7 +107,45 @@ public class MongoDB {
         String dni = huesped.getDni();
         String telefono = huesped.getTelefono();
         String correo = huesped.getCorreo();
-        return new Document().append(NOMBRE, nombre).append(DNI, dni).append(TELEFONO, telefono).append(CORREO, correo);
+        LocalDate fecha_nacimiento= huesped.getFechaNacimiento();
+        return new Document().append(NOMBRE, nombre).append(DNI, dni).append(TELEFONO, telefono).append(CORREO, correo).
+                append(FECHA_NACIMIENTO,fecha_nacimiento);
     }
+
+    public static Huesped getHuesped(Document documentoHuesped) {
+        if (documentoHuesped == null) {
+            return null;
+        }
+        return new Huesped(documentoHuesped.getString(NOMBRE),documentoHuesped.getString(DNI), documentoHuesped.getString(CORREO),
+                documentoHuesped.getString(TELEFONO),documentoHuesped.getLocalDate(FECHA_NACIMIENTO));
+    }
+
+
+    public static Document getDocumento(Habitacion habitacion) {
+        if (habitacion == null) {
+            return null;
+        }
+
+        int planta = habitacion.getPlanta();
+        double precio = habitacion.getPrecio();
+        int puerta = habitacion.getPuerta();
+        String identificador = habitacion.getIdentificador();
+
+        return new Document().append(PLANTA, planta).append(PUERTA,puerta).append(PRECIO,precio).append(IDENTIFICADOR,identificador);
+    }
+    public static Document getDocumento(Reserva reserva) {
+        if (reserva == null) {
+            return null;
+        }
+        Huesped huesped = reserva.getHuesped();
+        Habitacion habitacion = reserva.getHabitacion();
+        Document dHuesped = getDocumento(huesped);
+        Document dHabitacion = getDocumento(habitacion);
+
+
+        return new Document().append(HUESPED, dHuesped).append(HABITACION, dHabitacion);
+    }
+
+
 
 }
