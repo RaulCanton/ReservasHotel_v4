@@ -1,6 +1,6 @@
-package org.iesalandalus.programacion.reservashotel.Modelo.negocio.mongodb;
+package org.iesalandalus.programacion.reservashotel.Modelo.negocio.memoria;
 
-import com.mongodb.client.MongoCollection;
+import org.bson.Document;
 import org.iesalandalus.programacion.reservashotel.Modelo.dominio.Habitacion;
 import org.iesalandalus.programacion.reservashotel.Modelo.dominio.Huesped;
 import org.iesalandalus.programacion.reservashotel.Modelo.dominio.Reserva;
@@ -10,35 +10,30 @@ import org.iesalandalus.programacion.reservashotel.Modelo.negocio.mongodb.utilid
 import org.iesalandalus.programacion.utilidades.Entrada;
 
 import javax.naming.OperationNotSupportedException;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.bson.Document;
-
+import com.mongodb.client.MongoCollection;
 
 public class Reservas implements IReservas {
 
     private List<Reserva> coleccionReserva;
-
-    private static final String COLECCION = "reservas";
-
     private MongoCollection<Document> coleccionReservas;
+    @Override
+    public void comenzar() {
+    }
+
+    @Override
+    public void terminar() {
+
+    }
 
 
 
     public Reservas ()         {
          coleccionReserva= new ArrayList<>();
-    }
-    @Override
-    public void comenzar() {
-        coleccionReservas = MongoDB.getBD().getCollection(COLECCION);
-    }
-
-    @Override
-    public void terminar() {
-        MongoDB.cerrarConexion();
     }
 
     public List <Reserva> get(){
@@ -70,8 +65,9 @@ public class Reservas implements IReservas {
         if (coleccionReserva.contains(reserva)){
             reservaEncontrada= new Reserva(coleccionReserva.get(coleccionReserva.indexOf(reserva)));
         }
-        return reservaEncontrada;
+          return reservaEncontrada;
     }
+
 
 
     public void borrar (Reserva reserva) throws OperationNotSupportedException {
@@ -86,6 +82,20 @@ public class Reservas implements IReservas {
         }
     }
 
+    public List <Reserva> getReservas(Habitacion habitacion) {
+        if (habitacion == null){
+            throw new NullPointerException((" ERROR: No se puede buscar reservas con habitación nula. "));
+        }
+        List<Reserva> reservas = new ArrayList<>();
+        for (Document documentoReserva : coleccionReservas.find()) {
+            Reserva reserva = MongoDB.getReserva(documentoReserva);
+            if (reserva.getHabitacion().equals(habitacion)) {
+                reservas.add(reserva);
+            }
+        }
+
+        return reservas;
+    }
 
     public List <Reserva> getReservas (Huesped huesped){
         if (huesped == null) {
@@ -101,9 +111,6 @@ public class Reservas implements IReservas {
         return reservasHuesped;
 
     }
-
-
-
     public List<Reserva> getReservas(TipoHabitacion tipoHabitacion)throws NullPointerException{
         if (tipoHabitacion == null) {
             throw new NullPointerException("ERROR: No se pueden buscar reservas de un aula nula.");

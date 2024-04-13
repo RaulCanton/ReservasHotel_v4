@@ -9,6 +9,9 @@
     <file url="file://$PROJECT_DIR$/src/main/java/org/iesalandalus/programacion/reservashotel/Modelo/dominio/Regimen.java" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/src/main/java/org/iesalandalus/programacion/reservashotel/Modelo/dominio/Reserva.java" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/src/main/java/org/iesalandalus/programacion/reservashotel/Modelo/dominio/TipoHabitacion.java" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/src/main/java/org/iesalandalus/programacion/reservashotel/Modelo/negocio/memoria/Habitaciones.java" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/src/main/java/org/iesalandalus/programacion/reservashotel/Modelo/negocio/memoria/Huespedes.java" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/src/main/java/org/iesalandalus/programacion/reservashotel/Modelo/negocio/memoria/Reservas.java" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/src/main/java/org/iesalandalus/programacion/reservashotel/Modelo/negocio/mongodb/Habitaciones.java" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/src/main/java/org/iesalandalus/programacion/reservashotel/Modelo/negocio/mongodb/Huespedes.java" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/src/main/java/org/iesalandalus/programacion/reservashotel/Modelo/negocio/mongodb/Reservas.java" charset="windows-1252" />

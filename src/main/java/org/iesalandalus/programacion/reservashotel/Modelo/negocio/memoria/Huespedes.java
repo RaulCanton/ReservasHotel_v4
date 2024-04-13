@@ -1,47 +1,29 @@
-package org.iesalandalus.programacion.reservashotel.Modelo.negocio.mongodb;
+package org.iesalandalus.programacion.reservashotel.Modelo.negocio.memoria;
 
-import com.mongodb.client.MongoCollection;
 import org.iesalandalus.programacion.reservashotel.Modelo.dominio.Huesped;
 import org.iesalandalus.programacion.reservashotel.Modelo.negocio.IHuespedes;
 
 import javax.naming.OperationNotSupportedException;
 import java.util.ArrayList;
 import java.util.List;
-import org.bson.Document;
-import org.iesalandalus.programacion.reservashotel.Modelo.negocio.mongodb.utilidades.MongoDB;
 
 public class Huespedes implements IHuespedes {
 
     private List<Huesped> coleccionHuesped;
 
-    private static final String COLECCION = "huespedes";
+    @Override
+    public void comenzar() {
+    }
 
-    private MongoCollection<Document> colecccionHuespedes;
+    @Override
+    public void terminar() {
+
+    }
 
     public Huespedes () {
        coleccionHuesped = new ArrayList<>();
     }
 
-    @Override
-    public void comenzar() {
-        colecccionHuespedes = MongoDB.getBD().getCollection(COLECCION);
-    }
-
-    @Override
-    public void terminar() {
-        MongoDB.cerrarConexion();
-    }
-
-    @Override
-    public List<Huesped> get() {
-        List<Huesped> huespedes = new ArrayList<>();
-        Document docOrdenDni = new Document().append("dni", 1);
-        for (Document documentoHuesped : colecccionHuespedes.find().sort(docOrdenDni)) {
-            huespedes.add(MongoDB.getHuesped(documentoHuesped));
-        }
-        return huespedes;
-    }
-    @Override
     public List<Huesped> get(){
        return coleccionHuesped;
     }
