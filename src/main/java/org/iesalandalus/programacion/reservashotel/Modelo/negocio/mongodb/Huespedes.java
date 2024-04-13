@@ -10,17 +10,16 @@ import java.util.List;
 import org.bson.Document;
 import org.iesalandalus.programacion.reservashotel.Modelo.negocio.mongodb.utilidades.MongoDB;
 
-public class Huespedes implements IHuespedes {
 
-    private List<Huesped> coleccionHuesped;
+import static com.mongodb.client.model.Filters.eq;
+
+public class Huespedes implements IHuespedes {
 
     private static final String COLECCION = "huespedes";
 
     private MongoCollection<Document> colecccionHuespedes;
 
-    public Huespedes () {
-       coleccionHuesped = new ArrayList<>();
-    }
+    public Huespedes () { }
 
     @Override
     public void comenzar() {
@@ -35,57 +34,49 @@ public class Huespedes implements IHuespedes {
     @Override
     public List<Huesped> get() {
         List<Huesped> huespedes = new ArrayList<>();
-        Document docOrdenDni = new Document().append("dni", 1);
+        Document docOrdenDni = new Document().append(MongoDB.DNI, 1);
         for (Document documentoHuesped : colecccionHuespedes.find().sort(docOrdenDni)) {
             huespedes.add(MongoDB.getHuesped(documentoHuesped));
         }
         return huespedes;
     }
-    @Override
-    public List<Huesped> get(){
-       return coleccionHuesped;
-    }
-
 
     @Override
     public int getTamano() {
-        return coleccionHuesped.size();
+        return (int)colecccionHuespedes.countDocuments();
     }
 
     @Override
-    public void insertar (Huesped huesped) throws OperationNotSupportedException{
+    public void insertar(Huesped huesped) throws OperationNotSupportedException {
         if (huesped == null) {
-            throw new NullPointerException("ERROR: No se puede insertar un huésped nulo.");
+            throw new IllegalArgumentException("No se puede insertar un huésped nulo.");
         }
-        int indice=coleccionHuesped.indexOf(huesped);
-        if (indice==-1){
-            coleccionHuesped.add(new Huesped(huesped));
+        if (buscar(huesped) != null) {
+            throw new OperationNotSupportedException("El huésped ya existe.");
         } else {
-            throw new OperationNotSupportedException("ERROR:Ya existe un huésped con esos datos.");
+            colecccionHuespedes.insertOne(MongoDB.getDocumento(huesped));
         }
     }
-    @Override
-    public Huesped buscar (Huesped huesped){
-        Huesped huespedEncontrado= null;
-        if (huesped == null) {
-            throw new NullPointerException("ERROR: No se puede buscar un huésped nulo.");
-        }
 
-        if (coleccionHuesped.contains(huesped)){
-            huespedEncontrado=new Huesped(coleccionHuesped.get(coleccionHuesped.indexOf(huesped)));
-        }
-            return huespedEncontrado;
+    @Override
+    public Huesped buscar(Huesped huesped) {
+        Document buscoDni = new Document().append(MongoDB.DNI,huesped.getDni());
+        Document documentoHuesped = colecccionHuespedes.find(buscoDni).first();
+
+        return MongoDB.getHuesped(documentoHuesped);
+
     }
+
     @Override
-    public void borrar (Huesped huesped) throws OperationNotSupportedException {
+    public void borrar(Huesped huesped) throws OperationNotSupportedException {
         if (huesped == null) {
-            throw new NullPointerException("ERROR: No se puede borrar un huésped nulo.");
+            throw new IllegalArgumentException("No se puede borrar un huésped nulo.");
         }
 
-        if (coleccionHuesped.contains(huesped)) {
-            coleccionHuesped.remove(huesped);
+        if (buscar(huesped) != null) {
+            colecccionHuespedes.deleteOne(eq(MongoDB.DNI,huesped.getDni()));
         } else {
-            throw new OperationNotSupportedException("ERROR:No existe el huésped a borrar.");
+            throw new OperationNotSupportedException("El huésped a borrar no existe.");
         }
     }
 }

@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 import org.bson.Document;
 
+import static com.mongodb.client.model.Filters.eq;
+
 
 public class Reservas implements IReservas {
 
@@ -28,9 +30,8 @@ public class Reservas implements IReservas {
 
 
 
-    public Reservas ()         {
-         coleccionReserva= new ArrayList<>();
-    }
+    public Reservas (){ }
+
     @Override
     public void comenzar() {
         coleccionReservas = MongoDB.getBD().getCollection(COLECCION);
@@ -41,81 +42,100 @@ public class Reservas implements IReservas {
         MongoDB.cerrarConexion();
     }
 
-    public List <Reserva> get(){
-        return coleccionReserva;
-    }
-
-    public int getTamano() {
-        return coleccionReserva.size();
-    }
-
-    public void insertar (Reserva reserva) throws OperationNotSupportedException {
-        if (reserva == null) {
-            throw new NullPointerException("ERROR: No se puede insertar una reserva nula.");
+    @Override
+    public List<Reserva> get() {
+        List<Reserva> reservas = new ArrayList<>();
+        Document docOrdenFecgaIni = new Document().append(MongoDB.FECHA_INICIO_RESERVA, 1);
+        for (Document documentoReserva : coleccionReservas.find().sort(docOrdenFecgaIni)) {
+            reservas.add(MongoDB.getReserva(documentoReserva));
         }
-        if (!coleccionReserva.contains(reserva)){
-            coleccionReserva.add(new Reserva(reserva));
-        }else {
-            throw new OperationNotSupportedException("ERROR:Y existe una reserva con esos datos.");
+        return reservas;
+    }
+
+    @Override
+    public int getTamano() {
+        return (int)coleccionReservas.countDocuments();
+    }
+
+
+    @Override
+    public void insertar(Reserva reserva) throws OperationNotSupportedException {
+        if (reserva == null) {
+            throw new IllegalArgumentException("No se puede insertar una reserva nula.");
+        }
+        if (buscar(reserva) != null) {
+            throw new OperationNotSupportedException("La reserva ya existe.");
+        } else {
+            coleccionReservas.insertOne(MongoDB.getDocumento(reserva));
         }
     }
 
     @Override
-    public Reserva buscar (Reserva reserva){
-        Reserva reservaEncontrada=null;
-        if (reserva == null) {
-            throw new NullPointerException("ERROR: No se puede buscar un huésped nulo.");
-        }
+    public Reserva buscar(Reserva reserva) {
+        Document buscoReserva = new Document().append(MongoDB.HUESPED,MongoDB.getDocumento(reserva.getHuesped()));
+        Document documentoReserva = coleccionReservas.find(buscoReserva).first();
 
-        if (coleccionReserva.contains(reserva)){
-            reservaEncontrada= new Reserva(coleccionReserva.get(coleccionReserva.indexOf(reserva)));
-        }
-        return reservaEncontrada;
+        return MongoDB.getReserva(documentoReserva);
+
     }
 
 
-    public void borrar (Reserva reserva) throws OperationNotSupportedException {
+    @Override
+    public void borrar(Reserva reserva) throws OperationNotSupportedException {
         if (reserva == null) {
-            throw new NullPointerException("ERROR: No se puede borrar una reserva nula.");
+            throw new IllegalArgumentException("No se puede borrar una reserva nula.");
         }
 
-        if (coleccionReserva.contains(reserva)){
-            coleccionReserva.remove(reserva);
+        if (buscar(reserva) != null) {
+            coleccionReservas.deleteOne(eq(MongoDB.HUESPED,reserva.getHuesped()));
         } else {
-            throw new OperationNotSupportedException("ERROR:No existe ningúna reserva con ese nombre.");
+            throw new OperationNotSupportedException("La reserva a borrar no existe.");
         }
     }
 
 
-    public List <Reserva> getReservas (Huesped huesped){
+    @Override
+    public List<Reserva> getReservas(Huesped huesped)throws NullPointerException {
         if (huesped == null) {
-            throw new NullPointerException("ERROR: No se pueden buscar reservas de un huésped nulo.");
+            throw new IllegalArgumentException("No se puede obtener una reserva nula.");
         }
-        List <Reserva> reservasHuesped = new ArrayList<>();
-
-        for (Reserva reserva : coleccionReserva) {
-            if (reserva.getHuesped().equals(huesped)) {
-                reservasHuesped.add(new Reserva(reserva));
-            }
+        List<Reserva> reservashuesped = new ArrayList<>();
+        Document buscoResHuesped = new Document().append(MongoDB.HUESPED,MongoDB.getDocumento(huesped));
+        for (Document documentoReserva : coleccionReservas.find(buscoResHuesped)) {
+            reservashuesped.add(MongoDB.getReserva(documentoReserva));
         }
-        return reservasHuesped;
-
+        return reservashuesped;
     }
 
 
 
     public List<Reserva> getReservas(TipoHabitacion tipoHabitacion)throws NullPointerException{
         if (tipoHabitacion == null) {
-            throw new NullPointerException("ERROR: No se pueden buscar reservas de un aula nula.");
+            throw new NullPointerException("ERROR: No se pueden buscar reservas de un tipo de habitación nula.");
         }
         List <Reserva> reservasTipoHabitacion = new ArrayList<>();
-
-        for (Reserva reserva : coleccionReserva) {
-            if (reserva.getHabitacion().equals(tipoHabitacion)) {
-                reservasTipoHabitacion.add(new Reserva(reserva));
+        Document buscoResTipo = new Document().append(MongoDB.TIPO,tipoHabitacion.toString());
+        for (Document documentoReserva : coleccionReservas.find(buscoResTipo)) {
+            if (tipoHabitacion.equals(reservasTipoHabitacion)) {
+                reservasTipoHabitacion.add(MongoDB.getReserva(documentoReserva));
             }
         }
         return reservasTipoHabitacion;
+    }
+
+    public List<Reserva> getReservas(Habitacion habitacion)throws NullPointerException{
+        if (habitacion == null) {
+            throw new NullPointerException("ERROR: No se pueden buscar reservas de un tipo de habitación nula.");
+        }
+        List <Reserva> reservasHabitacion = new ArrayList<>();
+        Document buscoResHabitacion = new Document().append(MongoDB.HABITACION_IDENTIFICADOR,habitacion.getIdentificador());
+        for (Document documentoReserva : coleccionReservas.find(buscoResHabitacion)) {
+            Habitacion habitacionReserva = MongoDB.getHabitacion(documentoReserva.get(MongoDB.HABITACION,Document.class));
+            if (habitacionReserva.getIdentificador().equals(habitacion.getIdentificador())) {
+                reservasHabitacion.add(MongoDB.getReserva(documentoReserva));
+            }
+        }
+        return reservasHabitacion;
     }
     public List<Reserva> getReservasFuturas (Habitacion habitacion){
         if (habitacion == null) {
