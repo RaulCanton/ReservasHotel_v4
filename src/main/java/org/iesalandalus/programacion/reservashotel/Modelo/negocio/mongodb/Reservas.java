@@ -1,6 +1,7 @@
 package org.iesalandalus.programacion.reservashotel.Modelo.negocio.mongodb;
 
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.result.UpdateResult;
 import org.iesalandalus.programacion.reservashotel.Modelo.dominio.Habitacion;
 import org.iesalandalus.programacion.reservashotel.Modelo.dominio.Huesped;
 import org.iesalandalus.programacion.reservashotel.Modelo.dominio.Reserva;
@@ -21,8 +22,6 @@ import static com.mongodb.client.model.Filters.eq;
 
 
 public class Reservas implements IReservas {
-
-    private List<Reserva> coleccionReserva;
 
     private static final String COLECCION = "reservas";
 
@@ -143,10 +142,11 @@ public class Reservas implements IReservas {
         }
         List<Reserva> reservasHabitacion = new ArrayList<>();
 
-        for (Reserva reserva : reservasHabitacion) {
+        for (Document documentoReserva : coleccionReservas.find()) {
+            Reserva reserva=MongoDB.getReserva(documentoReserva);
             if (reserva.getHabitacion().equals(habitacion)
             && reserva.getFechaInicioReserva().isAfter(LocalDate.now())) {
-                reservasHabitacion.add(new Reserva(reserva));
+                reservasHabitacion.add(reserva);
             }
         }
         return reservasHabitacion;
@@ -156,20 +156,37 @@ public class Reservas implements IReservas {
         if (reserva == null) {
             throw new NullPointerException("ERROR: La reserva no puede ser nula.");
         }
+        Reserva reservaCheckIn = buscar(reserva);
+        if (reservaCheckIn == null) {
+            throw new IllegalArgumentException("La reserva no existe.");
+        }
 
-        System.out.print("Introduce la fecha de checkIn.");
-        String fechaCheckIn= Entrada.cadena();
-        fecha= LocalDate.from(LocalDateTime.parse(fechaCheckIn)).atStartOfDay();
-        reserva.setCheckIn(fecha);
+        UpdateResult actualizarCheckIn = coleccionReservas.updateOne(
+                new Document(MongoDB.HUESPED, MongoDB.getDocumento(reservaCheckIn.getHuesped())),
+                new Document("$set", new Document(MongoDB.CHECKIN, fecha)));
+
+        if (actualizarCheckIn.getModifiedCount() == 0) {
+
+            throw new IllegalStateException("No se pudo realizar el checkIn.");
+        }
     }
-    public void realizarCheckout (Reserva reserva, LocalDateTime fecha)throws NullPointerException,IllegalArgumentException{
+    public void realizarCheckout (Reserva reserva, LocalDateTime fecha)throws NullPointerException,IllegalArgumentException {
         if (reserva == null) {
             throw new NullPointerException("ERROR: La reserva no puede ser nula.");
         }
 
-        System.out.print("Introduce la fecha de checkOut.");
-        String fechaCheckOut= Entrada.cadena();
-        fecha= LocalDate.from(LocalDateTime.parse(fechaCheckOut)).atStartOfDay();
-        reserva.setCheckOut(fecha);
+        Reserva reservaCheckOut = buscar(reserva);
+        if (reservaCheckOut == null) {
+            throw new IllegalArgumentException("La reserva no existe.");
+        }
+
+        UpdateResult actualizarCheckOut = coleccionReservas.updateOne(
+                new Document(MongoDB.HUESPED, MongoDB.getDocumento(reservaCheckOut.getHuesped())),
+                new Document("$set", new Document(MongoDB.CHECKIN, fecha)));
+
+        if (actualizarCheckOut.getModifiedCount() == 0) {
+
+            throw new IllegalStateException("No se pudo realizar el checkIn.");
+        }
     }
 }
