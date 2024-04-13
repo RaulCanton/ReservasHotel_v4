@@ -1,13 +1,16 @@
 package org.iesalandalus.programacion.reservashotel.Modelo.negocio.mongodb;
 
+import com.mongodb.client.MongoCollection;
 import org.iesalandalus.programacion.reservashotel.Modelo.dominio.Habitacion;
 import org.iesalandalus.programacion.reservashotel.Modelo.dominio.Huesped;
 import org.iesalandalus.programacion.reservashotel.Modelo.dominio.Reserva;
 import org.iesalandalus.programacion.reservashotel.Modelo.dominio.TipoHabitacion;
 import org.iesalandalus.programacion.reservashotel.Modelo.negocio.IReservas;
+import org.iesalandalus.programacion.reservashotel.Modelo.negocio.mongodb.utilidades.MongoDB;
 import org.iesalandalus.programacion.utilidades.Entrada;
 
 import javax.naming.OperationNotSupportedException;
+import javax.swing.text.Document;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -16,6 +19,8 @@ import java.util.List;
 public class Reservas implements IReservas {
 
     private List<Reserva> coleccionReserva;
+
+    private MongoCollection<Document> coleccionReservas;
 
 
 
@@ -40,19 +45,6 @@ public class Reservas implements IReservas {
         }else {
             throw new OperationNotSupportedException("ERROR:Y existe una reserva con esos datos.");
         }
-    }
-
-    @Override
-    public Reserva buscar (Reserva reserva){
-        Reserva reservaEncontrada=null;
-        if (reserva == null) {
-            throw new NullPointerException("ERROR: No se puede buscar un huésped nulo.");
-        }
-
-        if (coleccionReserva.contains(reserva)){
-            reservaEncontrada= new Reserva(coleccionReserva.get(coleccionReserva.indexOf(reserva)));
-        }
-          return reservaEncontrada;
     }
 
 
@@ -84,6 +76,16 @@ public class Reservas implements IReservas {
         return reservasHuesped;
 
     }
+    @Override
+    public List<Reserva> getReservas() {
+        List<Reserva> reservas = new ArrayList<>();
+        for (Document documentoReserva : coleccionReservas.find()) {
+            reservas.add(MongoDB.(documentoReserva));
+        }
+        ;
+        return reservas;
+    }
+
     public List<Reserva> getReservas(TipoHabitacion tipoHabitacion)throws NullPointerException{
         if (tipoHabitacion == null) {
             throw new NullPointerException("ERROR: No se pueden buscar reservas de un aula nula.");
