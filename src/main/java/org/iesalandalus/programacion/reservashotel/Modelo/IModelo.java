@@ -32,6 +32,7 @@ public interface IModelo {
     public Reserva buscar(Reserva reserva);
     public List<Huesped> getHuespedes();
     public List<Reserva> getReservas();
+    public List<Reserva> getReservas (Habitacion habitacion);
     public List<Reserva> getReservas (Huesped huesped)throws NullPointerException;
     public List<Reserva> getReservas(TipoHabitacion tipoHabitacion)throws NullPointerException;
     public List<Reserva> getReservasFuturas(Habitacion habitacion);

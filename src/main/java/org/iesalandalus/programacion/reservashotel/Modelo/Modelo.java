@@ -49,6 +49,7 @@ public class Modelo implements IModelo {
     public List<Reserva> getReservas (Habitacion habitacion){
         return reservas.getReservas(habitacion);
     }
+
     public void insertar(Huesped huesped)throws OperationNotSupportedException{
 
             huespedes.insertar(huesped);
