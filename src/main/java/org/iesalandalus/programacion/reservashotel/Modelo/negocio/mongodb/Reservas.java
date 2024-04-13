@@ -107,7 +107,7 @@ public class Reservas implements IReservas {
     }
 
 
-
+    @Override
     public List<Reserva> getReservas(TipoHabitacion tipoHabitacion)throws NullPointerException{
         if (tipoHabitacion == null) {
             throw new NullPointerException("ERROR: No se pueden buscar reservas de un tipo de habitación nula.");
@@ -122,6 +122,7 @@ public class Reservas implements IReservas {
         return reservasTipoHabitacion;
     }
 
+    @Override
     public List<Reserva> getReservas(Habitacion habitacion)throws NullPointerException{
         if (habitacion == null) {
             throw new NullPointerException("ERROR: No se pueden buscar reservas de un tipo de habitación nula.");

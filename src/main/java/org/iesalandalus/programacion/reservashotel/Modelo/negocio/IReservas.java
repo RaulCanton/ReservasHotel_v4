@@ -28,6 +28,7 @@ public interface IReservas {
 
     public List<Reserva> getReservas(TipoHabitacion tipoHabitacion);
 
+    public List<Reserva> getReservas(Habitacion habitacion);
     public List<Reserva> getReservasFuturas(Habitacion habitacion);
 
     public void realizarCheckin(Reserva reserva, LocalDateTime fecha)throws OperationNotSupportedException;

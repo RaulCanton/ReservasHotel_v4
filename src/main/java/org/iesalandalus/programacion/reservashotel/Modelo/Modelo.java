@@ -4,6 +4,7 @@ import org.iesalandalus.programacion.reservashotel.Modelo.dominio.Habitacion;
 import org.iesalandalus.programacion.reservashotel.Modelo.dominio.Huesped;
 import org.iesalandalus.programacion.reservashotel.Modelo.dominio.Reserva;
 import org.iesalandalus.programacion.reservashotel.Modelo.dominio.TipoHabitacion;
+import org.iesalandalus.programacion.reservashotel.Modelo.negocio.IFuenteDatos;
 import org.iesalandalus.programacion.reservashotel.Modelo.negocio.IHabitaciones;
 import org.iesalandalus.programacion.reservashotel.Modelo.negocio.IHuespedes;
 import org.iesalandalus.programacion.reservashotel.Modelo.negocio.IReservas;
@@ -15,26 +16,39 @@ import javax.naming.OperationNotSupportedException;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class Modelo {
+public class Modelo implements IModelo {
 
     private IReservas reservas;
     private IHabitaciones habitaciones;
     private IHuespedes huespedes;
+    private IFuenteDatos fuenteDatos;
 
-    public Modelo(){
+    public Modelo(IFuenteDatos fuenteDatos){
+        huespedes =fuenteDatos.crearHuespedes();
+        habitaciones = fuenteDatos.crearHabitaciones();
+        reservas =fuenteDatos.crearReservas();
 
     }
 
     public void comenzar() {
-
-        reservas = new Reservas();
-        habitaciones = new Habitaciones();
-        huespedes = new Huespedes();
+        huespedes.comenzar();
+        habitaciones.comenzar();
+        reservas.comenzar();
     }
     public void terminar(){
-        System.out.println("El programa ha terminado.");
+        huespedes.terminar();;
+        habitaciones.terminar();
+        reservas.terminar();
     }
 
+    private void setFuenteDatos(IFuenteDatos fuenteDatos){
+        this.fuenteDatos=fuenteDatos;
+
+    }
+
+    public List<Reserva> getReservas (Habitacion habitacion){
+        return reservas.getReservas(habitacion);
+    }
     public void insertar(Huesped huesped)throws OperationNotSupportedException{
 
             huespedes.insertar(huesped);
@@ -70,14 +84,15 @@ public class Modelo {
         System.out.println("Se ha borrado la habitación.");
     }
 
-    public List <Habitacion> getHabitaciones(TipoHabitacion tipoHabitacion){
-
-        return habitaciones.get(tipoHabitacion);
-    }
     public List<Habitacion> getHabitaciones(){
 
         return habitaciones.get();
     }
+    public List <Habitacion> getHabitaciones(TipoHabitacion tipoHabitacion){
+
+        return habitaciones.get(tipoHabitacion);
+    }
+
 
     public void insertar(Reserva reserva)throws OperationNotSupportedException{
 
