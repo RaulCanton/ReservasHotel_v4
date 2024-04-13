@@ -1,10 +1,8 @@
 package org.iesalandalus.programacion.reservashotel.Modelo.negocio.mongodb.utilidades;
 
+import com.mongodb.*;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.MongoClientSettings;
-import com.mongodb.MongoCredential;
-import com.mongodb.ServerAddress;
 
 import com.mongodb.client.MongoClients;
 
@@ -80,14 +78,29 @@ public class MongoDB {
         Logger mongoLogger = Logger.getLogger( "org.mongodb.driver" );
         mongoLogger.setLevel(Level.SEVERE);
         if (conexion == null) {
-            MongoCredential credenciales = MongoCredential.createScramSha1Credential(USUARIO, BD, CONTRASENA.toCharArray());
-            conexion = MongoClients.create(
-                    MongoClientSettings.builder()
-                            .applyToClusterSettings(builder ->
-                                    builder.hosts(Arrays.asList(new ServerAddress(SERVIDOR, PUERTO))))
-                            .credential(credenciales)
-                            .build());
-            System.out.println("Conexi�n a MongoDB realizada correctamente.");
+            String connectionString = "mongodb+srv://"+USUARIO+":"+CONTRASENA+"@reservashotel.bbfywdz.mongodb.net/?retryWrites=true&w=majority&appName=reservashotel";
+            ServerApi serverApi = ServerApi.builder()
+                    .version(ServerApiVersion.V1)
+                    .build();
+            MongoClientSettings settings = MongoClientSettings.builder()
+                    .applyConnectionString(new ConnectionString(connectionString))
+                    .serverApi(serverApi)
+                    .build();
+
+            // Create a new client and connect to the server
+            MongoClient mongoClient = MongoClients.create(settings);
+            try {
+
+                conexion = mongoClient;
+                // Send a ping to confirm a successful connection
+                MongoDatabase database = mongoClient.getDatabase("admin");
+                database.runCommand(new Document("ping", 1));
+                System.out.println("Pinged your deployment. You successfully connected to MongoDB!");
+            } catch (MongoException e) {
+                e.printStackTrace();
+            }
+
+
         }
         return conexion;
     }

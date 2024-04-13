@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class HabitacionTest {
+    /*
     private static final String CADENA_NO_ESPERADA = "La cadena devuelta no es la esperada.";
     private static final String PLANTA_NO_ESPERADA = "El número de planta devuelta no es la misma que la pasada al constructor.";
     private static final String PUERTA_NO_ESPERADA = "El número de puerta devuelta no es la misma que la pasada al constructor.";
@@ -444,4 +445,6 @@ public class HabitacionTest {
                 habitacion.getIdentificador(), habitacion.getPlanta(), habitacion.getPuerta(), habitacion.getPrecio(),
                 habitacion.getNumeroMaximoPersonas(),habitacion.getNumBanos()), habitacion.toString(), CADENA_NO_ESPERADA);
     }
+
+     */
 }

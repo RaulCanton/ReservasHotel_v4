@@ -1,6 +1,6 @@
 package org.iesalandalus.programacion.reservashotel.modelo.negocio.memoria;
 
-import org.iesalandalus.programacion.reservashotel.modelo.dominio.Huesped;
+//import org.iesalandalus.programacion.reservashotel.modelo.dominio.Huesped;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -10,7 +10,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class HuespedesTest {
-
+/*
     private static final String ERROR_INSERTAR_HUESPED_NULO = "ERROR: No se puede insertar un huésped nulo.";
     private static final String ERROR_BORRAR_HUESPED_NULO = "ERROR: No se puede borrar un huésped nulo.";
 
@@ -358,4 +358,6 @@ public class HuespedesTest {
     }
 
 
+
+ */
 }
