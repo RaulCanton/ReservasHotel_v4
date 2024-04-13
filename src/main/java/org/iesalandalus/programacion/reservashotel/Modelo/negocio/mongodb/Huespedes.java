@@ -1,19 +1,35 @@
 package org.iesalandalus.programacion.reservashotel.Modelo.negocio.mongodb;
 
+import com.mongodb.client.MongoCollection;
 import org.iesalandalus.programacion.reservashotel.Modelo.dominio.Huesped;
 import org.iesalandalus.programacion.reservashotel.Modelo.negocio.IHuespedes;
 
 import javax.naming.OperationNotSupportedException;
 import java.util.ArrayList;
 import java.util.List;
+import org.bson.Document;
+import org.iesalandalus.programacion.reservashotel.Modelo.negocio.mongodb.utilidades.MongoDB;
 
 public class Huespedes implements IHuespedes {
 
     private List<Huesped> coleccionHuesped;
 
+    private static final String COLECCION = "huéspedes";
+
+    private MongoCollection<Document> colecccionHuespedes;
 
     public Huespedes () {
        coleccionHuesped = new ArrayList<>();
+    }
+
+    @Override
+    public void comenzar() {
+        colecccionHuespedes = MongoDB.getBD().getCollection(COLECCION);
+    }
+
+    @Override
+    public void terminar() {
+        MongoDB.cerrarConexion();
     }
 
     public List<Huesped> get(){

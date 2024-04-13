@@ -13,6 +13,7 @@ import org.iesalandalus.programacion.reservashotel.Modelo.dominio.*;
 import org.bson.Document;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.logging.Level;
@@ -63,6 +64,8 @@ public class MongoDB {
     private static final String NUMERO_PRESONAS = "numero_personas";
 
     private static MongoClient conexion = null;
+
+
     private MongoDB() {
     }
 
@@ -201,38 +204,35 @@ public class MongoDB {
         Regimen regimen = reserva.getRegimen();
         LocalDate fechaInicioReserva = reserva.getFechaInicioReserva();
         LocalDate fechaFinReserva =reserva.getFechaFinReserva();
+        int numeroPersonas = reserva.getNumeroPersonas();
+        LocalDateTime checkIn = reserva.getCheckIn();
+        LocalDateTime checkOut = reserva.getCheckOut();
         Document dHuesped = getDocumento(huesped);
         Document dHabitacion = getDocumento(habitacion);
 
         return new Document().append(HUESPED, dHuesped).append(HABITACION, dHabitacion).
                 append(REGIMEN,regimen).append(FECHA_INICIO_RESERVA,fechaInicioReserva)
-                .append(FECHA_FIN_RESERVA,fechaFinReserva);
+                .append(FECHA_FIN_RESERVA,fechaFinReserva).append(NUMERO_PRESONAS,numeroPersonas).append(CHECKIN,checkIn)
+                .append(CHECKOUT,checkOut);
     }
 
 
     public static Reserva getReserva(Document documentoReserva) {
+
         if (documentoReserva == null) {
             return null;
         }
         Document dHuesped = (Document) documentoReserva.get(HUESPED);
         Document dHabitacion = (Document) documentoReserva.get(HABITACION);
+        Regimen regimen = Regimen.valueOf(documentoReserva.getString(REGIMEN));
+        LocalDate fechaInicioReserva = LocalDate.parse(documentoReserva.getString(FECHA_INICIO_RESERVA));
+        LocalDate fechaFinReserva = LocalDate.parse(documentoReserva.getString(FECHA_FIN_RESERVA));
+        int numeroPersonas = documentoReserva.getInteger(NUMERO_PRESONAS);
 
+        Huesped huesped = getHuesped(dHuesped);
         Habitacion habitacion = getHabitacion(dHabitacion);
-        Habitacion habitacion = new Ha(((Document) documentoReserva.get(HABITACION))) {
-        };
-        Huesped huesped = new Huesped(getHuesped((Document) documentoReserva.get(HUESPED)));
-        Document dPermanencia = (Document) documentoReserva.get(PERMANENCIA);
-        LocalDate dia = LocalDate.parse(dPermanencia.getString(DIA), FORMATO_DIA);
-        String tipoPermanencia = dPermanencia.getString(TIPO);
-        Permanencia permanencia = null;
-        if (tipoPermanencia.equals(TIPO_TRAMO)) {
-            Tramo tramo = Tramo.valueOf(dPermanencia.getString(TRAMO));
-            permanencia = new PermanenciaPorTramo(dia, tramo);
-        } else {
-            LocalTime hora = LocalTime.parse(dPermanencia.getString(HORA), FORMATO_HORA);
-            permanencia = new PermanenciaPorHora(dia, hora);
-        }
-        return new Reserva(profesor, aula, permanencia);
+
+        return new Reserva(huesped, habitacion, regimen, fechaInicioReserva, fechaFinReserva,numeroPersonas);
     }
 
 }

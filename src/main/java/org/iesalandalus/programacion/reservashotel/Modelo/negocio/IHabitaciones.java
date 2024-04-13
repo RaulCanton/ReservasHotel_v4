@@ -7,6 +7,9 @@ import javax.naming.OperationNotSupportedException;
 import java.util.List;
 
 public interface IHabitaciones {
+    void comenzar();
+
+    void terminar();
 
     public List<Habitacion> get();
     public List<Habitacion> get(TipoHabitacion tipoHabitacion);

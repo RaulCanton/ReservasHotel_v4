@@ -6,6 +6,9 @@ import javax.naming.OperationNotSupportedException;
 import java.util.List;
 
 public interface IHuespedes {
+    void comenzar();
+
+    void terminar();
 
     public List<Huesped> get();
 

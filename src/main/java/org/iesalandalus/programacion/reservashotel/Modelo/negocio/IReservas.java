@@ -10,6 +10,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface IReservas {
+    void comenzar();
+
+    void terminar();
 
     public List<Reserva> get();
 

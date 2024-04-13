@@ -47,6 +47,7 @@ public class Reserva {
         setFechaFinReserva(reserva.getFechaFinReserva());
     }
 
+
     public Huesped getHuesped() {
         return huesped;
     }
@@ -196,6 +197,7 @@ public class Reserva {
                 getFechaFinReserva(), getPrecio());
 
     }
+
 }
 
 

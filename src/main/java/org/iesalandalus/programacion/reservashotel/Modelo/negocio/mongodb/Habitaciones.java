@@ -3,14 +3,31 @@ package org.iesalandalus.programacion.reservashotel.Modelo.negocio.mongodb;
 import org.iesalandalus.programacion.reservashotel.Modelo.dominio.*;
 import org.iesalandalus.programacion.reservashotel.Modelo.negocio.IHabitaciones;
 
+import com.mongodb.client.MongoCollection;
 import javax.naming.OperationNotSupportedException;
 import java.util.ArrayList;
 import java.util.List;
+import org.bson.Document;
+import org.iesalandalus.programacion.reservashotel.Modelo.negocio.mongodb.utilidades.MongoDB;
+
 public class Habitaciones implements IHabitaciones {
     private List<Habitacion> coleccionHabitacion;
+    private static final String COLECCION = "habitaciones";
+
+    private MongoCollection<Document> coleccionHabitaciones;
 
     public Habitaciones(){
         coleccionHabitacion=new ArrayList<>();
+    }
+
+    @Override
+    public void comenzar() {
+        coleccionHabitaciones = MongoDB.getBD().getCollection(COLECCION);
+    }
+
+    @Override
+    public void terminar() {
+        MongoDB.cerrarConexion();
     }
     @Override
     public List<Habitacion> get(){

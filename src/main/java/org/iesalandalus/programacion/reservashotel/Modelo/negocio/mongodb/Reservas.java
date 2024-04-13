@@ -10,15 +10,19 @@ import org.iesalandalus.programacion.reservashotel.Modelo.negocio.mongodb.utilid
 import org.iesalandalus.programacion.utilidades.Entrada;
 
 import javax.naming.OperationNotSupportedException;
-import javax.swing.text.Document;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import org.bson.Document;
+
 
 public class Reservas implements IReservas {
 
     private List<Reserva> coleccionReserva;
+
+    private static final String COLECCION = "reservas";
 
     private MongoCollection<Document> coleccionReservas;
 
@@ -26,6 +30,15 @@ public class Reservas implements IReservas {
 
     public Reservas ()         {
          coleccionReserva= new ArrayList<>();
+    }
+    @Override
+    public void comenzar() {
+        coleccionReservas = MongoDB.getBD().getCollection(COLECCION);
+    }
+
+    @Override
+    public void terminar() {
+        MongoDB.cerrarConexion();
     }
 
     public List <Reserva> get(){
@@ -47,6 +60,18 @@ public class Reservas implements IReservas {
         }
     }
 
+    @Override
+    public Reserva buscar (Reserva reserva){
+        Reserva reservaEncontrada=null;
+        if (reserva == null) {
+            throw new NullPointerException("ERROR: No se puede buscar un huésped nulo.");
+        }
+
+        if (coleccionReserva.contains(reserva)){
+            reservaEncontrada= new Reserva(coleccionReserva.get(coleccionReserva.indexOf(reserva)));
+        }
+        return reservaEncontrada;
+    }
 
 
     public void borrar (Reserva reserva) throws OperationNotSupportedException {
@@ -76,13 +101,19 @@ public class Reservas implements IReservas {
         return reservasHuesped;
 
     }
-    @Override
-    public List<Reserva> getReservas() {
+
+    public List <Reserva> getReservas(Habitacion habitacion) {
+        if (habitacion == null){
+            throw new NullPointerException((" ERROR: No se puede buscar reservas con habitación nula. "));
+        }
         List<Reserva> reservas = new ArrayList<>();
         for (Document documentoReserva : coleccionReservas.find()) {
-            reservas.add(MongoDB.(documentoReserva));
+            Reserva reserva = MongoDB.getReserva(documentoReserva);
+            if (reserva.getHabitacion().equals(habitacion)) {
+                reservas.add(reserva);
+            }
         }
-        ;
+
         return reservas;
     }
 
