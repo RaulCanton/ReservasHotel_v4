@@ -28,8 +28,6 @@ public class Huespedes implements IHuespedes {
        return coleccionHuesped;
     }
 
-
-    @Override
     public int getTamano() {
         return coleccionHuesped.size();
     }
@@ -56,7 +54,7 @@ public class Huespedes implements IHuespedes {
         if (coleccionHuesped.contains(huesped)){
             huespedEncontrado=new Huesped(coleccionHuesped.get(coleccionHuesped.indexOf(huesped)));
         }
-            return huespedEncontrado;
+        return huespedEncontrado;
     }
     @Override
     public void borrar (Huesped huesped) throws OperationNotSupportedException {
@@ -70,4 +68,5 @@ public class Huespedes implements IHuespedes {
             throw new OperationNotSupportedException("ERROR:No existe el huésped a borrar.");
         }
     }
+
 }

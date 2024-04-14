@@ -4,10 +4,10 @@ import java.util.Objects;
 
 public abstract class Habitacion {
 
-    public static final double MIN_PRECIO_HABITACION= 40;
+    public static final double MIN_PRECIO_HABITACION= 50;
     public static final double MAX_PRECIO_HABITACION = 150;
     public static final int MIN_NUMERO_PUERTA=0;
-    public static final int MAX_NUMERO_PUERTA=14;
+    public static final int MAX_NUMERO_PUERTA=10;
     public static final int MIN_NUMERO_PLANTA=1;
     public static final int MAX_NUMERO_PLANTA=3;
 

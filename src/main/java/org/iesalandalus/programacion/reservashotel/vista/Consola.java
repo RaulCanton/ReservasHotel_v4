@@ -118,13 +118,13 @@ public class Consola {
 
         switch (opcion){
             case 1:
-                return new Simple(planta,puerta,precio,identificador);
+                return new Simple(planta,puerta,precio);
             case 2:
-                return new Doble(planta,puerta,precio,identificador,1,2);
+                return new Doble(planta,puerta,precio,1,2);
             case 3:
-                return new Triple(planta,puerta,precio,identificador,2,3,0);
+                return new Triple(planta,puerta,precio,2,3,0);
             case 4:
-                return new Suite(planta,puerta,precio,identificador,1,true);
+                return new Suite(planta,puerta,precio,1,true);
             default:
                 throw new IllegalArgumentException("El tipo de habitación no es correcto.");
         }
@@ -144,7 +144,7 @@ public class Consola {
             puerta = Entrada.entero();
         }while (puerta <0 || puerta>14);
         String identificador=(String.format("%d%d",planta,puerta));
-        return new Simple(planta,puerta,40,identificador);
+        return new Simple(planta,puerta,40);
 
     }
 

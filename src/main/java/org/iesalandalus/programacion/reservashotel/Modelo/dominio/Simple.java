@@ -4,12 +4,14 @@ public class Simple extends Habitacion{
 
     private static final int NUM_MAXIMO_PERSONAS=1;
 
-    public Simple(int planta, int puerta, double precio,String identificador) {
+    public Simple(int planta, int puerta, double precio) {
         super(planta, puerta, precio);
+        setIdentificador();
     }
 
     public Simple(Simple habitacionSimple) {
         super(habitacionSimple);
+
     }
 
     @Override

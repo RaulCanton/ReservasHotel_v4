@@ -184,23 +184,23 @@ public class MongoDB {
 
 
         if (tipo.equals(TIPO_SIMPLE)) {
-            return new Simple(planta, puerta, precio,identificador);
+            return new Simple(planta, puerta, precio);
         }
         if (tipo.equals(TIPO_DOBLE)) {
             int camasIndividuales = documentoHabitacion.getInteger(CAMAS_INDIVIDUALES);
             int camasDobles = documentoHabitacion.getInteger(CAMAS_DOBLES);
-            return new Doble(planta, puerta, precio,identificador, camasIndividuales, camasDobles);
+            return new Doble(planta, puerta, precio, camasIndividuales, camasDobles);
         }
         if (tipo.equals(TIPO_TRIPLE)) {
             int camasIndividuales = documentoHabitacion.getInteger(CAMAS_INDIVIDUALES);
             int camasDobles = documentoHabitacion.getInteger(CAMAS_DOBLES);
             int numeroBanos = documentoHabitacion.getInteger(BANOS);
-            return new Triple(planta, puerta, precio,identificador, camasIndividuales, camasDobles,numeroBanos);
+            return new Triple(planta, puerta, precio, camasIndividuales, camasDobles,numeroBanos);
         }
         if (tipo.equals(TIPO_SUITE)){
             int numeroBanos = documentoHabitacion.getInteger(BANOS);
             boolean jacuzzi = documentoHabitacion.getBoolean(JACUZZI);
-            return  new Suite(planta,puerta,precio,identificador,numeroBanos,jacuzzi);
+            return  new Suite(planta,puerta,precio,numeroBanos,jacuzzi);
         }
         else {
 

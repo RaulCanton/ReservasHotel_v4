@@ -1,19 +1,20 @@
 package org.iesalandalus.programacion.reservashotel.modelo.negocio.memoria;
-/*
-import org.iesalandalus.programacion.reservashotel.modelo.dominio.Doble;
-import org.iesalandalus.programacion.reservashotel.modelo.dominio.Habitacion;
-import org.iesalandalus.programacion.reservashotel.modelo.dominio.Simple;
-import org.iesalandalus.programacion.reservashotel.modelo.dominio.Suite;
+
+import org.iesalandalus.programacion.reservashotel.Modelo.negocio.memoria.Habitaciones;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-*/
+import org.iesalandalus.programacion.reservashotel.Modelo.dominio.Habitacion;
+import org.iesalandalus.programacion.reservashotel.Modelo.dominio.Doble;
+import org.iesalandalus.programacion.reservashotel.Modelo.dominio.Simple;
+import org.iesalandalus.programacion.reservashotel.Modelo.dominio.Suite;
+
 import javax.naming.OperationNotSupportedException;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class HabitacionesTest {
-    /*
+
     private static final String ERROR_INSERTAR_HABITACION_NULA = "ERROR: No se puede insertar una habitación nula.";
     private static final String ERROR_BORRAR_HABITACION_NULA = "ERROR: No se puede borrar una habitación nula.";
     private static final String ERROR_HABITACION_EXISTE = "ERROR: Ya existe una habitación con ese identificador.";
@@ -352,5 +353,5 @@ public class HabitacionesTest {
         }
     }
 
-     */
+
 }

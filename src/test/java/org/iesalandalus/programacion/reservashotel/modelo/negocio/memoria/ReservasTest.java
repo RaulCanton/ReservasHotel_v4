@@ -1,6 +1,7 @@
 package org.iesalandalus.programacion.reservashotel.modelo.negocio.memoria;
 
-import org.iesalandalus.programacion.reservashotel.modelo.dominio.*;
+import org.iesalandalus.programacion.reservashotel.Modelo.dominio.*;
+import org.iesalandalus.programacion.reservashotel.Modelo.negocio.memoria.Reservas;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -11,7 +12,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ReservasTest {
-    /*
+
     private static Huesped huesped1;
     private static Huesped huesped2;
     private static Huesped huesped3;
@@ -514,5 +515,5 @@ public class ReservasTest {
         }
     }
 
-     */
+
 }

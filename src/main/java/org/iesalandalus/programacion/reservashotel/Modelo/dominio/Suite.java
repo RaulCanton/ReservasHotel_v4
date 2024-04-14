@@ -10,8 +10,9 @@ public class Suite extends Habitacion{
 
 
 
-    public Suite(int planta, int puerta, double precio,String identificador, int numBanos, boolean tieneJacuzzi) {
+    public Suite(int planta, int puerta, double precio, int numBanos, boolean tieneJacuzzi) {
         super(planta, puerta, precio);
+        setIdentificador();
         setNumBanos(numBanos);
         setTieneJacuzzi(tieneJacuzzi);
     }
