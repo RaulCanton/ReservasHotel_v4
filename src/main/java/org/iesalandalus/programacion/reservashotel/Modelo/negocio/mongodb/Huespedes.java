@@ -47,36 +47,44 @@ public class Huespedes implements IHuespedes {
     }
 
     @Override
-    public void insertar(Huesped huesped) throws OperationNotSupportedException {
+    public void insertar(Huesped huesped) throws OperationNotSupportedException,NullPointerException {
         if (huesped == null) {
-            throw new IllegalArgumentException("No se puede insertar un huésped nulo.");
+            throw new NullPointerException("ERROR:No se puede insertar un huésped nulo.");
         }
         if (buscar(huesped) != null) {
-            throw new OperationNotSupportedException("El huésped ya existe.");
+            throw new OperationNotSupportedException("ERROR: El huésped ya existe.");
         } else {
             colecccionHuespedes.insertOne(MongoDB.getDocumento(huesped));
         }
     }
 
     @Override
-    public Huesped buscar(Huesped huesped) {
+    public Huesped buscar(Huesped huesped) throws NullPointerException {
+        if (huesped == null) {
+            throw new NullPointerException("ERROR: No se puede buscar un huésped nulo.");
+        }
+
         Document buscoDni = new Document().append(MongoDB.DNI,huesped.getDni());
         Document documentoHuesped = colecccionHuespedes.find(buscoDni).first();
 
-        return MongoDB.getHuesped(documentoHuesped);
+        if (documentoHuesped != null) {
+            return MongoDB.getHuesped(documentoHuesped);
+        } else {
+            return null;
+        }
 
     }
 
     @Override
-    public void borrar(Huesped huesped) throws OperationNotSupportedException {
+    public void borrar(Huesped huesped) throws OperationNotSupportedException,NullPointerException {
         if (huesped == null) {
-            throw new IllegalArgumentException("No se puede borrar un huésped nulo.");
+            throw new NullPointerException("ERROR: No se puede borrar un huésped nulo.");
         }
 
         if (buscar(huesped) != null) {
             colecccionHuespedes.deleteOne(eq(MongoDB.DNI,huesped.getDni()));
         } else {
-            throw new OperationNotSupportedException("El huésped a borrar no existe.");
+            throw new OperationNotSupportedException("ERROR: El huésped a borrar no existe.");
         }
     }
 }

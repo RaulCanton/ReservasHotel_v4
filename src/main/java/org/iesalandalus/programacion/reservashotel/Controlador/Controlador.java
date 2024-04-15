@@ -49,7 +49,7 @@ public class Controlador {
     public void insertar(Huesped huesped)throws OperationNotSupportedException{
         modelo.insertar(huesped);
     }
-    public Huesped buscar(Huesped huesped){
+    public Huesped buscar(Huesped huesped) throws OperationNotSupportedException {
        return modelo.buscar(huesped);
     }
 

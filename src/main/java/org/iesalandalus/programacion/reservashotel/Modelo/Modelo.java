@@ -55,7 +55,7 @@ public class Modelo implements IModelo {
             huespedes.insertar(huesped);
     }
 
-    public Huesped buscar(Huesped huesped) {
+    public Huesped buscar(Huesped huesped) throws OperationNotSupportedException,RuntimeException {
 
         return huespedes.buscar(huesped);
     }

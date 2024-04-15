@@ -51,9 +51,9 @@ public class Habitaciones implements IHabitaciones {
         return (int)coleccionHabitaciones.countDocuments();
     }
     @Override
-    public void insertar(Habitacion habitacion) throws OperationNotSupportedException {
+    public void insertar(Habitacion habitacion) throws NullPointerException, OperationNotSupportedException {
         if (habitacion == null) {
-            throw new IllegalArgumentException("No se puede insertar una habitación nula.");
+            throw new NullPointerException("No se puede insertar una habitación nula.");
         }
         if (buscar(habitacion) != null) {
             throw new OperationNotSupportedException("La habitación ya existe.");
@@ -63,16 +63,23 @@ public class Habitaciones implements IHabitaciones {
     }
 
     @Override
-    public Habitacion buscar(Habitacion habitacion) {
+    public Habitacion buscar(Habitacion habitacion) throws NullPointerException{
+        if (habitacion == null) {
+            throw new NullPointerException("ERROR: No se puede buscar una habitación nula.");
+        }
         Document buscoIden = new Document().append(MongoDB.IDENTIFICADOR,habitacion.getIdentificador());
         Document documentoHabitacion = coleccionHabitaciones.find(buscoIden).first();
 
-        return MongoDB.getHabitacion(documentoHabitacion);
+        if (documentoHabitacion != null) {
+            return MongoDB.getHabitacion(documentoHabitacion);
+        } else {
+            return null;
+        }
 
     }
 
     @Override
-    public void borrar(Habitacion habitacion) throws OperationNotSupportedException {
+    public void borrar(Habitacion habitacion) throws NullPointerException, OperationNotSupportedException {
         if (habitacion == null) {
             throw new IllegalArgumentException("No se puede borrar una habitación nula.");
         }

@@ -14,7 +14,7 @@ public interface IModelo {
 
     public void terminar();
     public void insertar(Huesped huesped)throws OperationNotSupportedException;
-    public Huesped buscar(Huesped huesped);
+    public Huesped buscar(Huesped huesped) throws OperationNotSupportedException;
     public void borrar(Huesped huesped)throws OperationNotSupportedException;
 
     public  void insertar(Habitacion habitacion)throws OperationNotSupportedException;

@@ -59,13 +59,14 @@ public class Reservas implements IReservas {
     public Reserva buscar (Reserva reserva){
         Reserva reservaEncontrada=null;
         if (reserva == null) {
-            throw new NullPointerException("ERROR: No se puede buscar un huésped nulo.");
+            throw new NullPointerException("ERROR: No se puede buscar una reserva nula.");
         }
 
         if (coleccionReserva.contains(reserva)){
             reservaEncontrada= new Reserva(coleccionReserva.get(coleccionReserva.indexOf(reserva)));
         }
           return reservaEncontrada;
+
     }
 
 

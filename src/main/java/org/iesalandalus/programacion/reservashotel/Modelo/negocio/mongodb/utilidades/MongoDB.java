@@ -12,8 +12,10 @@ import org.bson.Document;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -113,36 +115,41 @@ public class MongoDB {
         }
     }
 
-    public static Document getDocumento(Huesped huesped) {
+    public static Document getDocumento(Huesped huesped) throws NullPointerException{
         if (huesped == null) {
-            return null;
+            throw new NullPointerException("ERROR: No se puede buscar un huésped nulo.");
         }
         String nombre = huesped.getNombre();
         String dni = huesped.getDni();
         String telefono = huesped.getTelefono();
         String correo = huesped.getCorreo();
         LocalDate fecha_nacimiento= huesped.getFechaNacimiento();
+
         return new Document().append(NOMBRE, nombre).append(DNI, dni).append(TELEFONO, telefono).append(CORREO, correo).
                 append(FECHA_NACIMIENTO,fecha_nacimiento);
     }
 
-    public static Huesped getHuesped(Document documentoHuesped) {
+    public static Huesped getHuesped(Document documentoHuesped) throws NullPointerException {
         if (documentoHuesped == null) {
-            return null;
+            throw new NullPointerException("ERROR: No se puede buscar con una colección huésped nula.");
         }
         String nombre = documentoHuesped.getString(NOMBRE);
         String dni = documentoHuesped.getString(DNI);
         String telefono = documentoHuesped.getString(TELEFONO);
         String correo = documentoHuesped.getString(CORREO);
-        LocalDate fecha_nacimiento= LocalDate.parse(documentoHuesped.getString(FECHA_NACIMIENTO));
+        Date fecha_nacimiento_date= documentoHuesped.getDate(FECHA_NACIMIENTO);
+        LocalDate fecha_nacimiento = fecha_nacimiento_date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
-        return new Huesped(nombre,dni,correo,telefono,fecha_nacimiento);
+        Huesped huesped = new Huesped(nombre,dni,correo,telefono,fecha_nacimiento);
+        
+        System.out.println(huesped);
+        return huesped;
     }
 
 
-    public static Document getDocumento(Habitacion habitacion) {
+    public static Document getDocumento(Habitacion habitacion)throws NullPointerException {
         if (habitacion == null) {
-            return null;
+            throw new NullPointerException("ERROR: No se puede buscar una habitación nula.");
         }
 
         int planta = habitacion.getPlanta();
@@ -171,9 +178,9 @@ public class MongoDB {
         return docuHabitacion;
     }
 
-    public static Habitacion getHabitacion(Document documentoHabitacion) {
+    public static Habitacion getHabitacion(Document documentoHabitacion) throws NullPointerException {
         if (documentoHabitacion == null) {
-            return null;
+            throw new NullPointerException("ERROR: No se puede buscar con una colección habitación nula.");
         }
 
         int planta = documentoHabitacion.getInteger(PLANTA);
@@ -208,10 +215,11 @@ public class MongoDB {
         }
     }
 
-    public static Document getDocumento(Reserva reserva) {
+    public static Document getDocumento(Reserva reserva)throws NullPointerException {
         if (reserva == null) {
-            return null;
+           throw new NullPointerException("La reserva no puede ser nula.");
         }
+
         Huesped huesped = reserva.getHuesped();
         Habitacion habitacion = reserva.getHabitacion();
         Regimen regimen = reserva.getRegimen();
@@ -230,10 +238,10 @@ public class MongoDB {
     }
 
 
-    public static Reserva getReserva(Document documentoReserva) {
+    public static Reserva getReserva(Document documentoReserva)throws NullPointerException {
 
         if (documentoReserva == null) {
-            return null;
+            throw new NullPointerException("ERROR: No se puede buscar con una colección reserva nula.");
         }
         Document dHuesped = (Document) documentoReserva.get(HUESPED);
         Document dHabitacion = (Document) documentoReserva.get(HABITACION);

@@ -63,16 +63,17 @@ public class Consola {
         System.out.print("Introduce la fecha de nacimiento del huésped en formato dia/mes/año: ");
         String fechaNacimiento = Entrada.cadena();
 
-        return new Huesped (nombre,dni,telefono,correo,LocalDate.parse(fechaNacimiento, DateTimeFormatter.ofPattern(Huesped.FORMATO_FECHA)));
+        DateTimeFormatter formatoFecha = DateTimeFormatter.ofPattern(Huesped.FORMATO_FECHA);
+        LocalDate fechaNaciFormateada = LocalDate.parse(fechaNacimiento, formatoFecha);
+
+        return new Huesped (nombre,dni,telefono,correo,fechaNaciFormateada);
 
     }
     public static Huesped getHuespedPorDni()throws NullPointerException{
 
-
-
         String dni;
-
-        LocalDate formatoDia = LocalDate.parse("23/07/1980");
+        DateTimeFormatter formatofecha = DateTimeFormatter.ofPattern(Huesped.FORMATO_FECHA);
+        LocalDate formatoDia = LocalDate.parse("23/07/1980",formatofecha);
 
         do {
             System.out.print("Introduce el dni del cliente: ");
@@ -82,7 +83,6 @@ public class Consola {
        return new Huesped("Pepito Perez Perez",dni,"900101010","loquesea@gmail.com",formatoDia);
 
     }
-
 
     public static Habitacion leerHabitacion()throws IllegalArgumentException{
 
@@ -144,7 +144,7 @@ public class Consola {
             puerta = Entrada.entero();
         }while (puerta <0 || puerta>14);
         String identificador=(String.format("%d%d",planta,puerta));
-        return new Simple(planta,puerta,40);
+        return new Simple(planta,puerta,60);
 
     }
 
@@ -170,19 +170,22 @@ public class Consola {
     }
     public static Reserva leerReserva() {
         int numeroPersonas;
+
         Huesped huesped = new Huesped(Consola.leerHuesped());
+
+
         Habitacion habitacion = Consola.leerHabitacion();
         Regimen regimen;
-        regimen=Consola.leerRegimen();
+        regimen = Consola.leerRegimen();
 
-        LocalDate fechaInicioReserva=leerFecha("Introduce la fecha de inicio de la reserva en formato dia/mes/año:");
+        LocalDate fechaInicioReserva = leerFecha("Introduce la fecha de inicio de la reserva en formato dia/mes/año:");
 
         LocalDate fechaFinReserva = leerFecha("Introduce la fecha de fin de la reserva en formato dia/mes/año:");
 
         System.out.print("Introduce el número de personas. ");
         numeroPersonas = Entrada.entero();
 
-        return new Reserva(huesped,habitacion,regimen,fechaInicioReserva,fechaFinReserva,numeroPersonas);
+        return new Reserva(huesped, habitacion, regimen, fechaInicioReserva, fechaFinReserva, numeroPersonas);
 
     }
     public static LocalDate leerFecha(String mensaje)throws DateTimeParseException {

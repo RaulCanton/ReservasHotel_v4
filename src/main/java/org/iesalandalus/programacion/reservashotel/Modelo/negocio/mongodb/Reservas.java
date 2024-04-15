@@ -70,19 +70,27 @@ public class Reservas implements IReservas {
     }
 
     @Override
-    public Reserva buscar(Reserva reserva) {
+    public Reserva buscar(Reserva reserva) throws NullPointerException{
+        if (reserva == null) {
+            throw new NullPointerException("ERROR: No se puede buscar una reserva nula.");
+        }
+
         Document buscoReserva = new Document().append(MongoDB.HUESPED,MongoDB.getDocumento(reserva.getHuesped()));
         Document documentoReserva = coleccionReservas.find(buscoReserva).first();
 
-        return MongoDB.getReserva(documentoReserva);
+        if (documentoReserva != null) {
+            return MongoDB.getReserva(documentoReserva);
+        } else {
+            return null;
+        }
 
     }
 
 
     @Override
-    public void borrar(Reserva reserva) throws OperationNotSupportedException {
+    public void borrar(Reserva reserva) throws NullPointerException, OperationNotSupportedException {
         if (reserva == null) {
-            throw new IllegalArgumentException("No se puede borrar una reserva nula.");
+            throw new NullPointerException("No se puede borrar una reserva nula.");
         }
 
         if (buscar(reserva) != null) {
@@ -96,7 +104,7 @@ public class Reservas implements IReservas {
     @Override
     public List<Reserva> getReservas(Huesped huesped)throws NullPointerException {
         if (huesped == null) {
-            throw new IllegalArgumentException("No se puede obtener una reserva nula.");
+            throw new NullPointerException("No se puede obtener una reserva nula.");
         }
         List<Reserva> reservashuesped = new ArrayList<>();
         Document buscoResHuesped = new Document().append(MongoDB.HUESPED,MongoDB.getDocumento(huesped));
@@ -137,7 +145,7 @@ public class Reservas implements IReservas {
         }
         return reservasHabitacion;
     }
-    public List<Reserva> getReservasFuturas (Habitacion habitacion){
+    public List<Reserva> getReservasFuturas (Habitacion habitacion)throws NullPointerException{
         if (habitacion == null) {
             throw new NullPointerException("ERROR: No se pueden buscar reservas de una habitación nula.");
         }
@@ -168,7 +176,7 @@ public class Reservas implements IReservas {
 
         if (actualizarCheckIn.getModifiedCount() == 0) {
 
-            throw new IllegalStateException("No se pudo realizar el checkIn.");
+            throw new IllegalArgumentException("No se pudo realizar el checkIn.");
         }
     }
     public void realizarCheckout (Reserva reserva, LocalDateTime fecha)throws NullPointerException,IllegalArgumentException {
@@ -187,7 +195,7 @@ public class Reservas implements IReservas {
 
         if (actualizarCheckOut.getModifiedCount() == 0) {
 
-            throw new IllegalStateException("No se pudo realizar el checkIn.");
+            throw new IllegalArgumentException("No se pudo realizar el checkIn.");
         }
     }
 }

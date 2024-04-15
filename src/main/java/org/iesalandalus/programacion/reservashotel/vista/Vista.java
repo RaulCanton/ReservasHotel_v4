@@ -71,9 +71,11 @@ public class Vista {
 
     public void buscarHuesped() {
         try {
-            controlador.getReservas(Consola.getHuespedPorDni());
+            controlador.buscar(Consola.getHuespedPorDni());
         }catch (NullPointerException e){
             System.out.println(e.getMessage());
+        } catch (OperationNotSupportedException e) {
+            throw new RuntimeException(e);
         }
 
     }
@@ -128,7 +130,7 @@ public class Vista {
 
     public void buscarHabitacion() {
         try {
-            controlador.buscar(Consola.leerHabitacionPorIdentificador());
+            controlador.buscar(Consola.leerHabitacion());
         }catch (NullPointerException e){
             System.out.println(e.getMessage());
         }
@@ -137,7 +139,7 @@ public class Vista {
 
     public void borrarHabitacion(){
         try {
-            controlador.borrar(Consola.leerHabitacionPorIdentificador());
+            controlador.borrar(Consola.leerHabitacion());
             System.out.println("Se ha borrado la habitación.");
 
         }catch (OperationNotSupportedException e){

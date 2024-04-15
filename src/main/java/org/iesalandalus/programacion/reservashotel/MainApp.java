@@ -21,11 +21,14 @@ public class MainApp {
             System.out.println(e.getMessage());
         } catch (NullPointerException e) {
             System.out.println(e.getMessage());
+        } catch (RuntimeException e){
+            System.out.println(e.getMessage());
         }
     }
 
     private static IFuenteDatos procesarArgumentosFuenteDatos(String[] args) {
         IFuenteDatos fuenteDatos = FactoriaFuenteDatos.MONGODB.crear();
+
         for (String argumento : args) {
             if (argumento.equalsIgnoreCase("-fdmongodb")) {
                 fuenteDatos = FactoriaFuenteDatos.MONGODB.crear();

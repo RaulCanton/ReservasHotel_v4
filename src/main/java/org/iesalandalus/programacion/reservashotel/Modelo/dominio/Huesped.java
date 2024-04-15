@@ -142,7 +142,8 @@ public class Huesped {
         if (fechaNacimiento==null){
             throw  new NullPointerException("ERROR: La fecha de nacimiento de un huésped no puede ser nula.");
         }
-        this.fechaNacimiento= fechaNacimiento;
+
+        this.fechaNacimiento=fechaNacimiento;
 
     }
     public LocalDate getFechaNacimiento(){
