@@ -81,20 +81,20 @@ public class Reserva {
         return fechaInicioReserva;
     }
 
-    public void setFechaInicioReserva(LocalDate fechaInicioreserva)throws NullPointerException,DateTimeException {
-        if (fechaInicioreserva==null){
+    public void setFechaInicioReserva(LocalDate fechaInicioReserva)throws NullPointerException,DateTimeException {
+        if (fechaInicioReserva==null){
             throw new NullPointerException("ERROR: La fecha de inicio de una reserva no puede ser nula.");
         }
         LocalDate diaActual= LocalDate.now();
         LocalDate date=diaActual.plus(Period.ofMonths(MAX_NUMERO_MESES_RESERVAS));
-        if(diaActual.isAfter(fechaInicioreserva)){
+        if(diaActual.isAfter(fechaInicioReserva)){
             throw new DateTimeException("ERROR: La fecha de inicio de la reserva no puede ser anterior al día de hoy.");
         }
         if (fechaInicioReserva.isAfter(date)){
             throw new DateTimeException("ERROR: La fecha de inicio de la reserva no puede ser posterior a seis meses.");
         }
         else {
-            this.fechaInicioReserva = fechaInicioreserva;
+            this.fechaInicioReserva = fechaInicioReserva;
         }
     }
 
